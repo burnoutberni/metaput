@@ -11,15 +11,20 @@ window.onload = function () {
 
   if (loggedOn) {
     login.style.display = "none";
+    getFiles();
   } else {
     login.onclick = function () {
       this.href = "https://api.put.io/v2/oauth2/authenticate?client_id="+clientId+"&response_type=token&redirect_uri="+redirectUri;
     }
   }
+}
 
+function getFiles(accessToken) {
   var json = httpGet("https://api.put.io/v2/files/list?oauth_token="+accessToken);
-
-  console.log(json);
+  for (var i = 0; i < json.files.length; i++) {
+    document.getElementById("fileList").innerHTML = "<li>"+json.files[i].name"</li>";
+  }
+  //console.log(json);
 }
 
 function httpGet(theUrl) {
